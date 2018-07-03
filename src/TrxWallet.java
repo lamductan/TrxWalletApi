@@ -19,8 +19,6 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Optional;
 
-import static org.tron.keystore.WalletUtils.loadWalletFile;
-
 public class TrxWallet {
     private static final Logger logger = LoggerFactory.getLogger("TestClient");
     private Client client = new Client();
@@ -28,26 +26,11 @@ public class TrxWallet {
     private WalletClient wallet;
 
     public static Block getBlock(long blockNum) {
-       return WalletClient.getBlock(blockNum);
+       return WalletClient.GetBlock(blockNum);
     }
 
     public static Optional<Transaction> getTransactionById(String transactionId) {
         return WalletClient.getTransactionById(transactionId);
-    }
-
-    /**
-     * Print information of transaction in terminal.
-     * @param transactionId  a string giving string hash of transaction
-     * There is a unknown bug when calling this api.
-     */
-    public void GetTransactionInfoById(String transactionId) {
-        Optional<Protocol.TransactionInfo> result = WalletClient.getTransactionInfoById(transactionId);
-        if (result.isPresent()) {
-            Protocol.TransactionInfo transactionInfo = result.get();
-            logger.info(Utils.printTransactionInfo(transactionInfo));
-        } else {
-            logger.info("getTransactionInfoById " + " failed !!");
-        }
     }
 
     /**
@@ -167,6 +150,7 @@ public class TrxWallet {
         }
     }
 
+    /*
     public void login(String password, String walletFilePath) throws IOException, CipherException {
         char[] password_cstr = password.toCharArray();
         String filePath = "Wallet/" + walletFilePath;
@@ -184,6 +168,7 @@ public class TrxWallet {
         StringUtils.clear(passwd);
 
     }
+    */
 
     public void logout() {
         wallet.logout();
@@ -238,6 +223,7 @@ public class TrxWallet {
         logger.info("Register a wallet successful, keystore file name is " + fileName);
     }
 
+    /*
     public String getEcKey(String password, String walletFilePath) throws CipherException, IOException {
         byte[] passwd = StringUtils.char2Byte(password.toCharArray());
         String filePath = "Wallet/" + walletFilePath;
@@ -247,16 +233,7 @@ public class TrxWallet {
         ECKey ecKey = walletClient.getEcKey(passwd);
         return ecKey.toString();
     }
-
-    public String getPrivateKey(String password, String walletFilePath) throws CipherException, IOException {
-        byte[] passwd = StringUtils.char2Byte(password.toCharArray());
-        String filePath = "Wallet/" + walletFilePath;
-        File file = new File(filePath);
-        WalletFile walletFile = loadWalletFile(file);
-        WalletClient walletClient = new WalletClient(walletFile);
-        byte[] privateKey = walletClient.getPrivateBytes(passwd);
-        return ByteUtil.toHexString(privateKey);
-    }
+    */
 
     public void sendCoin(String toAddress, long amount) throws IOException, CipherException, CancelException {
         boolean result = (client != null && isLogin);
@@ -328,21 +305,6 @@ public class TrxWallet {
         String password = "tronUTS123";
         String walletFilePath = "UTC--2018-06-28T07-51-35.623000000Z--TKA6RhDiCy5uASGoD1cvdD37NeRsr7L8An.json";
 
-        try {
-            trx.login(password, walletFilePath);
-        } catch(IOException e) {
-            System.out.println(e);
-        } catch (CipherException e) {
-            System.out.println(e);
-        }
-
-        try {
-            System.out.println(trx.getPrivateKey(password, walletFilePath));
-        } catch (CipherException e) {
-            System.out.println(e);
-        } catch (IOException e) {
-            System.out.println(e);
-        }
 
         if (trx.wallet.isLoginState()) {
             System.out.println("Is login");
