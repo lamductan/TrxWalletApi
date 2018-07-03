@@ -7,14 +7,14 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../testnet/wallet-cli/build/libs/wallet-cli.jar!/" />
+          <root url="jar://$MODULE_DIR$/../wallet-cli/build/libs/wallet-cli.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES>
-          <root url="jar://$MODULE_DIR$/../testnet/wallet-cli/build/libs/wallet-cli.jar!/" />
+          <root url="jar://$MODULE_DIR$/../wallet-cli/build/libs/wallet-cli.jar!/" />
         </SOURCES>
       </library>
     </orderEntry>
