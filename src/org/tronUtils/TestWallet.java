@@ -39,7 +39,7 @@ public class TestWallet {
     public static void getTransactionById(String transactionId) {
         Optional<Transaction> result = TrxWallet.getTransactionById(transactionId);
         if (result.isPresent()) {
-            Protocol.Transaction transaction = result.get();
+            Transaction transaction = result.get();
             logger.info(Utils.printTransaction(transaction));
         } else {
             logger.info("getTransactionById " + " failed !!");
@@ -86,6 +86,15 @@ public class TestWallet {
         }
     }
 
+    public static void sendCoin(String fromAddress, String password, String walletFilePath, String toAddress, long amount) {
+        boolean result = TrxWallet.sendCoin(fromAddress, password, walletFilePath, toAddress, amount);
+        if (result) {
+            logger.info("Send " + amount + " drop to " + toAddress + " successful !!");
+        } else {
+            logger.info("Send " + amount + " drop to " + toAddress + " failed !!");
+        }
+    }
+
 
     public static void main(String[] args) {
         //getBlock(	73308);
@@ -101,6 +110,10 @@ public class TestWallet {
 
         //getBlockByLimitNext(73308, 73310);
         //getBlockByLatestNum(2);
-        getAccount("TKA6RhDiCy5uASGoD1cvdD37NeRsr7L8An");
+        //getAccount("TKA6RhDiCy5uASGoD1cvdD37NeRsr7L8An");
+
+        String password = "tronUTS123";
+        String walletFilePath = "UTC--2018-06-28T07-51-35.623000000Z--TKA6RhDiCy5uASGoD1cvdD37NeRsr7L8An.json";
+        sendCoin("TKA6RhDiCy5uASGoD1cvdD37NeRsr7L8An", password, walletFilePath, "TVEZkb74GxXkp3Sxk5AzozoyYCkEJFUswZ", 1000000);
     }
 }
