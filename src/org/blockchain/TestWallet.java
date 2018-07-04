@@ -1,17 +1,14 @@
-package org.tronUtils;
+package org.blockchain;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.tron.api.GrpcAPI;
 import org.tron.common.utils.Utils;
 import org.tron.core.exception.CipherException;
-import org.tron.keystore.StringUtils;
-import org.tron.protos.Protocol;
 import org.tron.protos.Protocol.Account;
 import org.tron.protos.Protocol.Block;
 import org.tron.protos.Protocol.Transaction;
 import org.tron.api.GrpcAPI.BlockList;
-import org.tron.walletserver.WalletClient;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -24,12 +21,12 @@ public class TestWallet {
      * @param blockNum  a number giving height of this block
      */
     public static void getBlock(long blockNum) {
-        Block block = TrxWallet.getBlock(blockNum);
+        Block block = TronUtils.getBlock(blockNum);
         if (block == null) {
             logger.info("No block for num : " + blockNum);
             return;
         }
-        logger.info(Utils.printBlock(block));
+        logger.info(block.toString());
     }
 
     /**
@@ -37,7 +34,7 @@ public class TestWallet {
      * @param transactionId  a string giving string hash of transaction
      */
     public static void getTransactionById(String transactionId) {
-        Optional<Transaction> result = TrxWallet.getTransactionById(transactionId);
+        Optional<Transaction> result = TronUtils.getTransactionById(transactionId);
         if (result.isPresent()) {
             Transaction transaction = result.get();
             logger.info(Utils.printTransaction(transaction));
@@ -48,7 +45,7 @@ public class TestWallet {
 
 
     public static void registerWallet(String password) throws CipherException, IOException {
-        String fileName = TrxWallet.registerWallet(password);
+        String fileName = TronUtils.registerWallet(password);
 
         if (null == fileName) {
             logger.info("Register wallet failed !!");
@@ -58,7 +55,7 @@ public class TestWallet {
     }
 
     public static void getBlockByLimitNext(long startBlockNum, long endBlockNum) {
-        Optional<BlockList> result = TrxWallet.getBlockByLimitNext(startBlockNum, endBlockNum);
+        Optional<BlockList> result = TronUtils.getBlockByLimitNext(startBlockNum, endBlockNum);
         if (result.isPresent()) {
             BlockList blockList = result.get();
             logger.info(Utils.printBlockList(blockList));
@@ -68,7 +65,7 @@ public class TestWallet {
     }
 
     public static void getBlockByLatestNum(long num) {
-        Optional<BlockList> result = TrxWallet.getBlockByLatestNum(num);
+        Optional<BlockList> result = TronUtils.getBlockByLatestNum(num);
         if (result.isPresent()) {
             GrpcAPI.BlockList blockList = result.get();
             logger.info(Utils.printBlockList(blockList));
@@ -78,7 +75,7 @@ public class TestWallet {
     }
 
     public static void getAccount(String accountAddress) {
-        Account account = TrxWallet.getAccount(accountAddress);
+        Account account = TronUtils.getAccount(accountAddress);
         if (account == null) {
             logger.info("GetAccount failed !!!!");
         } else {
@@ -87,7 +84,7 @@ public class TestWallet {
     }
 
     public static void sendCoin(String fromAddress, String password, String walletFilePath, String toAddress, long amount) {
-        boolean result = TrxWallet.sendCoin(fromAddress, password, walletFilePath, toAddress, amount);
+        boolean result = TronUtils.sendCoinFromFileAndPassword(fromAddress, password, walletFilePath, toAddress, amount);
         if (result) {
             logger.info("Send " + amount + " drop to " + toAddress + " successful !!");
         } else {
