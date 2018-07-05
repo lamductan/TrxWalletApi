@@ -4,6 +4,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.tron.api.GrpcAPI.BlockList;
 import org.tron.common.crypto.ECKey;
+import org.tron.common.crypto.Sha256Hash;
+import org.tron.common.utils.ByteArray;
 import org.tron.common.utils.ByteUtil;
 import org.tron.common.utils.TransactionUtils;
 import org.tron.common.utils.Utils;
@@ -136,4 +138,30 @@ public class TronUtils {
         WalletFile walletFile = Wallet.createStandard(passwd, credentials.getEcKeyPair());
         return Wallet.decrypt(passwd, walletFile);
     }
+
+    public static String getTransactionId(Transaction transaction) {
+        return ByteArray.toHexString(Sha256Hash.hash(transaction.getRawData().toByteArray()));
+    }
+
+    public static String getTransactionHash(Transaction transaction) {
+        return ByteArray.toHexString(Sha256Hash.hash(transaction.toByteArray()));
+    }
+
+    public static String getTransactionOwner(Contract.TransferContract transferContract) {
+        return WalletClient.encode58Check(transferContract.getOwnerAddress().toByteArray());
+    }
+
+    public static String getTransactionOwner(Contract.TransferAssetContract transferAssetContract) {
+        return WalletClient.encode58Check(transferAssetContract.getOwnerAddress().toByteArray());
+    }
+
+    public static String getTransactionToAddress(Contract.TransferContract transferContract) {
+        return WalletClient.encode58Check(transferContract.getToAddress().toByteArray());
+    }
+
+    public static String getTransactionToAddress(Contract.TransferAssetContract transferAssetContract) {
+        return WalletClient.encode58Check(transferAssetContract.getToAddress().toByteArray());
+    }
+
+
 }
