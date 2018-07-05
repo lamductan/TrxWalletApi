@@ -1,5 +1,6 @@
 package org.blockchain;
 
+import com.google.protobuf.InvalidProtocolBufferException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.tron.api.GrpcAPI.BlockList;
@@ -147,20 +148,46 @@ public class TronUtils {
         return ByteArray.toHexString(Sha256Hash.hash(transaction.toByteArray()));
     }
 
-    public static String getTransactionOwner(Contract.TransferContract transferContract) {
-        return WalletClient.encode58Check(transferContract.getOwnerAddress().toByteArray());
+    public static String getContractOwner(Transaction.Contract contract) throws InvalidProtocolBufferException {
+        Transaction.Contract.ContractType contractType = contract.getType();
+        switch (contractType) {
+            case TransferContract:
+                Contract.TransferContract transferContract = contract.getParameter().unpack(Contract.TransferContract.class);
+                return WalletClient.encode58Check(transferContract.getOwnerAddress().toByteArray());
+            case TransferAssetContract:
+                Contract.TransferAssetContract transferAssetContract = contract.getParameter().unpack(Contract.TransferAssetContract.class);
+                return WalletClient.encode58Check(transferAssetContract.getOwnerAddress().toByteArray());
+            default:
+                return null;
+        }
     }
 
-    public static String getTransactionOwner(Contract.TransferAssetContract transferAssetContract) {
-        return WalletClient.encode58Check(transferAssetContract.getOwnerAddress().toByteArray());
+    public static String getContractToAddress(Transaction.Contract contract) throws InvalidProtocolBufferException {
+        Transaction.Contract.ContractType contractType = contract.getType();
+        switch (contractType) {
+            case TransferContract:
+                Contract.TransferContract transferContract = contract.getParameter().unpack(Contract.TransferContract.class);
+                return WalletClient.encode58Check(transferContract.getToAddress().toByteArray());
+            case TransferAssetContract:
+                Contract.TransferAssetContract transferAssetContract = contract.getParameter().unpack(Contract.TransferAssetContract.class);
+                return WalletClient.encode58Check(transferAssetContract.getToAddress().toByteArray());
+            default:
+                return null;
+        }
     }
 
-    public static String getTransactionToAddress(Contract.TransferContract transferContract) {
-        return WalletClient.encode58Check(transferContract.getToAddress().toByteArray());
-    }
-
-    public static String getTransactionToAddress(Contract.TransferAssetContract transferAssetContract) {
-        return WalletClient.encode58Check(transferAssetContract.getToAddress().toByteArray());
+    public static long getContractAmount(Transaction.Contract contract) throws InvalidProtocolBufferException {
+        Transaction.Contract.ContractType contractType = contract.getType();
+        switch (contractType) {
+            case TransferContract:
+                Contract.TransferContract transferContract = contract.getParameter().unpack(Contract.TransferContract.class);
+                return transferContract.getAmount();
+            case TransferAssetContract:
+                Contract.TransferAssetContract transferAssetContract = contract.getParameter().unpack(Contract.TransferAssetContract.class);
+                return transferAssetContract.getAmount();
+            default:
+                return -1;
+        }
     }
 
 

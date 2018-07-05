@@ -39,28 +39,16 @@ public class TestWallet {
         for(int i = 0; i < listTransactions.size(); i++) {
             Transaction transaction = listTransactions.get(i);
             List<Transaction.Contract> listContract = transaction.getRawData().getContractList();
+            System.out.println("Transaction " + i + ":");
+            System.out.println("  txid: " + TronUtils.getTransactionId(transaction));
+            System.out.println("  hash:" + TronUtils.getTransactionHash(transaction));
             for(int j = 0; j < listContract.size(); ++j) {
                 Transaction.Contract contract = listContract.get(j);
                 Transaction.Contract.ContractType contractType = contract.getType();
-                System.out.println(contractType.toString());
-                System.out.println("Transaction " + i + ":");
-                System.out.println("  txid: " + TronUtils.getTransactionId(transaction));
-                System.out.println("  hash:" + TronUtils.getTransactionHash(transaction));
-
-                if (contractType == Transaction.Contract.ContractType.TransferContract) {
-                    Contract.TransferContract transferContract = contract.getParameter().unpack(Contract.TransferContract.class);
-                    System.out.println("  From: " + TronUtils.getTransactionOwner(transferContract));
-                    System.out.println("  To: " + TronUtils.getTransactionToAddress(transferContract));
-                    System.out.println("  Amount: " + transferContract.getAmount());
-                    System.out.println();
-                }
-                if (contractType == Transaction.Contract.ContractType.TransferAssetContract) {
-                    Contract.TransferAssetContract transferAssetContract = contract.getParameter().unpack(Contract.TransferAssetContract.class);
-                    System.out.println("  From: " + TronUtils.getTransactionOwner(transferAssetContract));
-                    System.out.println("  To: " + TronUtils.getTransactionToAddress(transferAssetContract));
-                    System.out.println("  Amount: " + transferAssetContract.getAmount());
-                    System.out.println();
-                }
+                System.out.println("    " + contractType.toString());
+                System.out.println("    From: " + TronUtils.getContractOwner(contract));
+                System.out.println("    To: " + TronUtils.getContractToAddress(contract));
+                System.out.println("    Amount: " + TronUtils.getContractAmount(contract));
             }
         }
     }
@@ -130,7 +118,7 @@ public class TestWallet {
 
 
     public static void main(String[] args) throws InvalidProtocolBufferException {
-        getBlock(	73308);
+        getBlock(	28692);
         //getTransactionById("103e376d01ea205a8e3ba6ad36f55322485412565b3192d088044de21f8ce837");
 
         /*
