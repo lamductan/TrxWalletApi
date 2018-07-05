@@ -42,13 +42,14 @@ public class TestWallet {
             System.out.println("Transaction " + i + ":");
             System.out.println("  txid: " + TronUtils.getTransactionId(transaction));
             System.out.println("  hash:" + TronUtils.getTransactionHash(transaction));
-            for(int j = 0; j < listContract.size(); ++j) {
+            for(int j = 0; j < listContract.size(); j++) {
                 Transaction.Contract contract = listContract.get(j);
                 Transaction.Contract.ContractType contractType = contract.getType();
-                System.out.println("    " + contractType.toString());
-                System.out.println("    From: " + TronUtils.getContractOwner(contract));
-                System.out.println("    To: " + TronUtils.getContractToAddress(contract));
-                System.out.println("    Amount: " + TronUtils.getContractAmount(contract));
+                System.out.println("    Contract " + j + ":");
+                System.out.println("      Contract type: " + contractType.toString());
+                System.out.println("      From: " + TronUtils.getContractOwner(contract));
+                System.out.println("      To: " + TronUtils.getContractToAddress(contract));
+                System.out.println("      Amount: " + TronUtils.getContractAmount(contract));
             }
         }
     }
@@ -119,6 +120,7 @@ public class TestWallet {
 
     public static void main(String[] args) throws InvalidProtocolBufferException {
         getBlock(	28692);
+        getBlock(73308);
         //getTransactionById("103e376d01ea205a8e3ba6ad36f55322485412565b3192d088044de21f8ce837");
 
         /*
