@@ -185,7 +185,18 @@ public class TronUtils {
         WalletFile walletFile = Wallet.createStandard(passwd, credentials.getEcKeyPair());
         return Wallet.decrypt(passwd, walletFile);
     }
-
+    public static String backUpWallet(String password, String walletFilePath)
+    {
+        ECKey ecKey = null;
+        try {
+            ecKey = getEcKey(password, walletFilePath);
+        } catch (CipherException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return ByteArray.toHexString(ecKey.getPrivKey().toByteArray());
+    }
     public static String getTransactionId(Transaction transaction) {
         return ByteArray.toHexString(Sha256Hash.hash(transaction.getRawData().toByteArray()));
     }

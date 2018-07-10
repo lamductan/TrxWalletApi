@@ -144,24 +144,23 @@ public class TestWallet {
         //getBlock(33039);
         //getTransactionById("103e376d01ea205a8e3ba6ad36f55322485412565b3192d088044de21f8ce837");
 
-        /*
-        try {
-            registerWallet("tronUTS123");
-        } catch (Exception e) {
-            System.out.println(e);
-        }
-        */
 
+//        try {
+//            registerWallet("Trong-DatPhan0411");
+//        } catch (Exception e) {
+//            System.out.println(e);
+//        }
+        System.out.print(TronUtils.backUpWallet("Trong-DatPhan0411","UTC--2018-07-10T07-51-29.623000000Z--TMoki8ACYc6GUKm8Wo2TZwwfkRCWgqe6Tq.json"));
         //getBlockByLimitNext(73308, 73310);
         //getBlockByLatestNum(2);
         //getAccount("TKA6RhDiCy5uASGoD1cvdD37NeRsr7L8An");
 
-        String password = "tronUTS123";
-        String walletFilePath = "UTC--2018-06-28T07-51-35.623000000Z--TKA6RhDiCy5uASGoD1cvdD37NeRsr7L8An.json";
+        //String password = "tronUTS123";
+        //String walletFilePath = "UTC--2018-06-28T07-51-35.623000000Z--TKA6RhDiCy5uASGoD1cvdD37NeRsr7L8An.json";
         //sendCoin("TKA6RhDiCy5uASGoD1cvdD37NeRsr7L8An", password, walletFilePath, "TVEZkb74GxXkp3Sxk5AzozoyYCkEJFUswZ", 1000000);
         //getAccount("TKA6RhDiCy5uASGoD1cvdD37NeRsr7L8An");
         //getAccount("TVEZkb74GxXkp3Sxk5AzozoyYCkEJFUswZ");
-        sendToken("TKA6RhDiCy5uASGoD1cvdD37NeRsr7L8An", password, walletFilePath, "TVEZkb74GxXkp3Sxk5AzozoyYCkEJFUswZ", "DucTan", 1);
+        //sendToken("TKA6RhDiCy5uASGoD1cvdD37NeRsr7L8An", password, walletFilePath, "TVEZkb74GxXkp3Sxk5AzozoyYCkEJFUswZ", "DucTan", 1);
         //getAccount("TKA6RhDiCy5uASGoD1cvdD37NeRsr7L8An");
         //getAccount("TVEZkb74GxXkp3Sxk5AzozoyYCkEJFUswZ");
         // git ignore
@@ -180,5 +179,6 @@ public class TestWallet {
 //            }
 //
         // lamductan branch
+        // phantrdat
     }
 }
