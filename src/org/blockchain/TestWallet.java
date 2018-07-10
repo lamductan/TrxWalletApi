@@ -147,24 +147,24 @@ public class TestWallet {
         //getBlockByLatestNum(2);
         //getAccount("TKA6RhDiCy5uASGoD1cvdD37NeRsr7L8An");
 
-        //String password = "tronUTS123";
-        //String walletFilePath = "UTC--2018-06-28T07-51-35.623000000Z--TKA6RhDiCy5uASGoD1cvdD37NeRsr7L8An.json";
+        String password = "tronUTS123";
+        String walletFilePath = "UTC--2018-06-28T07-51-35.623000000Z--TKA6RhDiCy5uASGoD1cvdD37NeRsr7L8An.json";
         //sendCoin("TKA6RhDiCy5uASGoD1cvdD37NeRsr7L8An", password, walletFilePath, "TVEZkb74GxXkp3Sxk5AzozoyYCkEJFUswZ", 1000000);
 
-        for(int i = 0; i < 330000; i++){
-            System.out.println("Block " + i);
-            Block block = TronUtils.getBlock(i);
-            List<Transaction> listTransactions = block.getTransactionsList();
-
-            for(int j = 0; j < listTransactions.size(); j++) {
-                Transaction transaction = listTransactions.get(j);
-                List<Transaction.Contract> listContract = transaction.getRawData().getContractList();
-                if (listContract.size() > 1) {
-                    System.out.println("    Transaction " + j);
-                }
-
-            }
-
-        }
+//        for(int i = 0; i < 330000; i++){
+//            System.out.println("Block " + i);
+//            Block block = TronUtils.getBlock(i);
+//            List<Transaction> listTransactions = block.getTransactionsList();
+//
+//            for(int j = 0; j < listTransactions.size(); j++) {
+//                Transaction transaction = listTransactions.get(j);
+//                List<Transaction.Contract> listContract = transaction.getRawData().getContractList();
+//                if (listContract.size() > 1) {
+//                    System.out.println("    Transaction " + j);
+//                }
+//
+//            }
+//
+//        }
     }
 }

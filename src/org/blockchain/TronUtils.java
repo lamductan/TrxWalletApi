@@ -99,6 +99,17 @@ public class TronUtils {
         }
         return false;
     }
+    public static boolean sendCoinFromFileAndPassword(String fromAddress, String password, String walletFilePath, String toAddress, String tokenName, long amount) {
+
+        try {
+            ECKey ecKey = getEcKey(password, walletFilePath);
+            return sendCoinFromPrivKey(fromAddress, ecKey, toAddress,tokenName,amount);
+        } catch (Exception e) {
+            System.out.println("wrong sendcoin");
+            e.printStackTrace();
+        }
+        return false;
+    }
 
     public static boolean sendCoinFromPrivKey(String fromAddress, ECKey ecKey, String toAddress, long amount) {
         if(!WalletClient.encode58Check(ecKey.getAddress()).equals(fromAddress)){
@@ -110,7 +121,16 @@ public class TronUtils {
         return sendCoin(ecKey, toAddress, amount);
     }
 
-    public static boolean sendCoinWithTokenName(ECKey ecKey, String toAddress, String tokenName, long amount)
+    public static boolean sendCoinFromPrivKey(String fromAddress, ECKey ecKey, String toAddress, String tokenName, long amount) {
+        if(!WalletClient.encode58Check(ecKey.getAddress()).equals(fromAddress)){
+            System.out.println("from priv key: " + WalletClient.encode58Check(ecKey.getAddress()));
+            System.out.println("address: " + WalletClient.decodeFromBase58Check(fromAddress).toString());
+            System.out.println("address input is not map with private key");
+            return false;
+        }
+        return sendToken(ecKey, toAddress,tokenName, amount);
+    }
+    public static boolean sendToken(ECKey ecKey, String toAddress, String tokenName, long amount)
     {
         byte[] owner = ecKey.getAddress();
         byte[] to = WalletClient.decodeFromBase58Check(toAddress);
