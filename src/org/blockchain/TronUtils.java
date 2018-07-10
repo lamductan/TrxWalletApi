@@ -99,16 +99,27 @@ public class TronUtils {
         }
         return false;
     }
-    public static boolean sendCoinFromFileAndPassword(String fromAddress, String password, String walletFilePath, String toAddress, String tokenName, long amount) {
+    public static boolean sendTokenFromFileAndPassword(String fromAddress, String password, String walletFilePath, String toAddress, String tokenName, long amount) {
 
         try {
             ECKey ecKey = getEcKey(password, walletFilePath);
-            return sendCoinFromPrivKey(fromAddress, ecKey, toAddress,tokenName,amount);
+            return sendTokenFromPrivKey(fromAddress, ecKey, toAddress,tokenName,amount);
         } catch (Exception e) {
             System.out.println("wrong sendcoin");
             e.printStackTrace();
         }
         return false;
+    }
+    public static Transaction sendTokenFromFileAndPasswordAndGetTrxId(String fromAddress, String password, String walletFilePath, String toAddress, String tokenName, long amount) {
+
+        try {
+            ECKey ecKey = getEcKey(password, walletFilePath);
+            return sendTokenFromPrivKeyAndGetTrxId(fromAddress, ecKey, toAddress,tokenName,amount);
+        } catch (Exception e) {
+            System.out.println("wrong sendcoin");
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public static boolean sendCoinFromPrivKey(String fromAddress, ECKey ecKey, String toAddress, long amount) {
@@ -121,7 +132,7 @@ public class TronUtils {
         return sendCoin(ecKey, toAddress, amount);
     }
 
-    public static boolean sendCoinFromPrivKey(String fromAddress, ECKey ecKey, String toAddress, String tokenName, long amount) {
+    public static boolean sendTokenFromPrivKey(String fromAddress, ECKey ecKey, String toAddress, String tokenName, long amount) {
         if(!WalletClient.encode58Check(ecKey.getAddress()).equals(fromAddress)){
             System.out.println("from priv key: " + WalletClient.encode58Check(ecKey.getAddress()));
             System.out.println("address: " + WalletClient.decodeFromBase58Check(fromAddress).toString());
@@ -129,6 +140,40 @@ public class TronUtils {
             return false;
         }
         return sendToken(ecKey, toAddress,tokenName, amount);
+    }
+    public static Transaction sendTokenFromPrivKeyAndGetTrxId(String fromAddress, ECKey ecKey, String toAddress, String tokenName, long amount) {
+        if(!WalletClient.encode58Check(ecKey.getAddress()).equals(fromAddress)){
+            System.out.println("from priv key: " + WalletClient.encode58Check(ecKey.getAddress()));
+            System.out.println("address: " + WalletClient.decodeFromBase58Check(fromAddress).toString());
+            System.out.println("address input is not map with private key");
+            return null;
+        }
+        return sendTokenAndGetTrxId(ecKey, toAddress,tokenName, amount);
+    }
+    public static Transaction sendTokenAndGetTrxId(ECKey ecKey, String toAddress, String tokenName, long amount)
+    {
+        byte[] owner = ecKey.getAddress();
+        byte[] to = WalletClient.decodeFromBase58Check(toAddress);
+        byte[] assetName = tokenName.getBytes();
+        Contract.TransferAssetContract assetContract = WalletClient.createTransferAssetContract(to,assetName,owner,amount);
+        Transaction transaction = rpcCli.createTransferAssetTransaction(assetContract);
+
+        if (transaction == null) {
+            System.out.println("Transaction null");
+            return null;
+        } else if (transaction.getRawData().getContractCount() == 0) {
+            Logger logger = LoggerFactory.getLogger("TestClient");
+            logger.info(Utils.printTransaction(transaction));
+            System.out.println("transaction.getRawData().getContractCount() == 0");
+            return null;
+        }
+        try {
+            transaction = TransactionUtils.sign(transaction, ecKey);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        if(rpcCli.broadcastTransaction(transaction)) return transaction;
+        return null;
     }
     public static boolean sendToken(ECKey ecKey, String toAddress, String tokenName, long amount)
     {
