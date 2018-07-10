@@ -131,14 +131,23 @@ public class TestWallet {
     }
 
     public static void sendToken(String fromAddress, String password, String walletFilePath, String toAddress, String tokenName, long amount) {
-        boolean result = TronUtils.sendCoinFromFileAndPassword(fromAddress, password, walletFilePath, toAddress, tokenName, amount);
+        boolean result = TronUtils.sendTokenFromFileAndPassword(fromAddress, password, walletFilePath, toAddress, tokenName, amount);
         if (result) {
             logger.info("Send " + amount + " " + tokenName + " drop to " + toAddress + " successful !!");
         } else {
             logger.info("Send " + amount + " " + tokenName + " drop to " + toAddress + " failed !!");
         }
     }
-
+    public static Transaction sendTokenAndGetTrxId(String fromAddress, String password, String walletFilePath, String toAddress, String tokenName, long amount) {
+        Transaction transaction = TronUtils.sendTokenFromFileAndPasswordAndGetTrxId(fromAddress, password, walletFilePath, toAddress, tokenName, amount);
+        boolean result = (transaction==null)?false:true;
+        if (result) {
+            logger.info("Send " + amount + " " + tokenName + " drop to " + toAddress + " successful !!");
+        } else {
+            logger.info("Send " + amount + " " + tokenName + " drop to " + toAddress + " failed !!");
+        }
+        return transaction;
+    }
     public static void main(String[] args) throws InvalidProtocolBufferException {
         getBlock(28692);
         //getBlock(33039);
@@ -151,12 +160,15 @@ public class TestWallet {
 //            System.out.println(e);
 //        }
         System.out.print(TronUtils.backUpWallet("Trong-DatPhan0411","UTC--2018-07-10T07-51-29.623000000Z--TMoki8ACYc6GUKm8Wo2TZwwfkRCWgqe6Tq.json"));
+
         //getBlockByLimitNext(73308, 73310);
         //getBlockByLatestNum(2);
         //getAccount("TKA6RhDiCy5uASGoD1cvdD37NeRsr7L8An");
 
-        //String password = "tronUTS123";
-        //String walletFilePath = "UTC--2018-06-28T07-51-35.623000000Z--TKA6RhDiCy5uASGoD1cvdD37NeRsr7L8An.json";
+        String password = "tronUTS123";
+        String walletFilePath = "UTC--2018-06-28T07-51-35.623000000Z--TKA6RhDiCy5uASGoD1cvdD37NeRsr7L8An.json";
+        Transaction transaction = sendTokenAndGetTrxId("TKA6RhDiCy5uASGoD1cvdD37NeRsr7L8An", password, walletFilePath, "TVEZkb74GxXkp3Sxk5AzozoyYCkEJFUswZ", "DucTan",5);
+        System.out.print(TronUtils.getTransactionId(transaction));
         //sendCoin("TKA6RhDiCy5uASGoD1cvdD37NeRsr7L8An", password, walletFilePath, "TVEZkb74GxXkp3Sxk5AzozoyYCkEJFUswZ", 1000000);
         //getAccount("TKA6RhDiCy5uASGoD1cvdD37NeRsr7L8An");
         //getAccount("TVEZkb74GxXkp3Sxk5AzozoyYCkEJFUswZ");
