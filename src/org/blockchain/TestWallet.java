@@ -140,7 +140,7 @@ public class TestWallet {
     }
 
     public static void main(String[] args) throws InvalidProtocolBufferException {
-        //getBlock(28692);
+        getBlock(28692);
         //getBlock(33039);
         //getTransactionById("103e376d01ea205a8e3ba6ad36f55322485412565b3192d088044de21f8ce837");
 
