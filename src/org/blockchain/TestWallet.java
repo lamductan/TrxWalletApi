@@ -164,7 +164,7 @@ public class TestWallet {
         sendToken("TKA6RhDiCy5uASGoD1cvdD37NeRsr7L8An", password, walletFilePath, "TVEZkb74GxXkp3Sxk5AzozoyYCkEJFUswZ", "DucTan", 100);
         //getAccount("TKA6RhDiCy5uASGoD1cvdD37NeRsr7L8An");
         //getAccount("TVEZkb74GxXkp3Sxk5AzozoyYCkEJFUswZ");
-        // git branch test
+        // git ignore
 //        for(int i = 0; i < 330000; i++){
 //            System.out.println("Block " + i);
 //            Block block = TronUtils.getBlock(i);
