@@ -149,6 +149,7 @@ public class TronUtils {
     public static String getTransactionHash(Transaction transaction) {
         return ByteArray.toHexString(Sha256Hash.hash(transaction.toByteArray()));
     }
+    // get Transaction Amount made by Trong Dat
     public static long getTransactionAmount(Transaction transaction) {
         long totalAmount = 0;
         List<Transaction.Contract> listContract = transaction.getRawData().getContractList();
