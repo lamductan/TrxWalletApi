@@ -17,3 +17,19 @@ timestamp: Thu Jan 01 08:00:00 ICT 1970
 }
 
 11:22:50.145 INFO  [main] [TestClient](TestWallet.java:138) Send 100 TRX drop to TVEZkb74GxXkp3Sxk5AzozoyYCkEJFUswZ failed !!
+11:29:37.083 INFO  [main] [Configuration](Configuration.java:56) use user defined config file in current dir
+11:29:44.781 INFO  [main] [TestClient](TronUtils.java:146) hash: 
+e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+txid: 
+e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+raw_data: 
+{
+ref_block_bytes: 
+ref_block_num: 0
+ref_block_hash: 
+timestamp: Thu Jan 01 08:00:00 ICT 1970
+}
+
+11:29:44.781 INFO  [main] [TestClient](TestWallet.java:138) Send 100  drop to TVEZkb74GxXkp3Sxk5AzozoyYCkEJFUswZ failed !!
+11:30:08.289 INFO  [main] [Configuration](Configuration.java:56) use user defined config file in current dir
+11:30:14.459 INFO  [main] [TestClient](TestWallet.java:136) Send 100 DucTan drop to TVEZkb74GxXkp3Sxk5AzozoyYCkEJFUswZ successful !!
