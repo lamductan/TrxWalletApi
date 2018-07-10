@@ -33,3 +33,121 @@ timestamp: Thu Jan 01 08:00:00 ICT 1970
 11:29:44.781 INFO  [main] [TestClient](TestWallet.java:138) Send 100  drop to TVEZkb74GxXkp3Sxk5AzozoyYCkEJFUswZ failed !!
 11:30:08.289 INFO  [main] [Configuration](Configuration.java:56) use user defined config file in current dir
 11:30:14.459 INFO  [main] [TestClient](TestWallet.java:136) Send 100 DucTan drop to TVEZkb74GxXkp3Sxk5AzozoyYCkEJFUswZ successful !!
+11:38:25.884 INFO  [main] [Configuration](Configuration.java:56) use user defined config file in current dir
+11:38:27.271 INFO  [main] [TestClient](TestWallet.java:119) 
+address: TKA6RhDiCy5uASGoD1cvdD37NeRsr7L8An
+type: 0
+balance: 6498664766
+free_net_usage: 597
+net_usage: 0
+create_time: Wed Jun 27 11:32:03 ICT 2018
+asset
+{
+  name: LDTan
+  balance: 350
+  latest_asset_operation_time: null
+  free_asset_net_usage: 0
+}
+asset
+{
+  name: DucTan
+  balance: 800
+  latest_asset_operation_time: null
+  free_asset_net_usage: 0
+}
+latest_opration_time: Tue Jul 10 11:30:12 ICT 2018
+latest_consume_time: 0
+latest_consume_free_time: 510399004
+allowance: 0
+latest_withdraw_time: Thu Jan 01 08:00:00 ICT 1970
+is_witness: false
+asset_issued_name: LDTan
+
+11:38:27.474 INFO  [main] [TestClient](TestWallet.java:119) 
+address: TVEZkb74GxXkp3Sxk5AzozoyYCkEJFUswZ
+type: 0
+balance: 11453235234
+free_net_usage: 0
+net_usage: 0
+create_time: Thu Jun 28 09:37:42 ICT 2018
+asset
+{
+  name: LDTan
+  balance: 650
+  latest_asset_operation_time: null
+  free_asset_net_usage: 0
+}
+asset
+{
+  name: DucTan
+  balance: 4200
+  latest_asset_operation_time: null
+  free_asset_net_usage: 0
+}
+latest_opration_time: Thu Jun 28 15:44:06 ICT 2018
+latest_consume_time: 0
+latest_consume_free_time: 510058482
+allowance: 0
+latest_withdraw_time: Thu Jan 01 08:00:00 ICT 1970
+is_witness: false
+asset_issued_name: DucTan
+
+11:38:33.062 INFO  [main] [TestClient](TestWallet.java:136) Send 100 DucTan drop to TVEZkb74GxXkp3Sxk5AzozoyYCkEJFUswZ successful !!
+11:38:33.261 INFO  [main] [TestClient](TestWallet.java:119) 
+address: TKA6RhDiCy5uASGoD1cvdD37NeRsr7L8An
+type: 0
+balance: 6498664766
+free_net_usage: 804
+net_usage: 0
+create_time: Wed Jun 27 11:32:03 ICT 2018
+asset
+{
+  name: LDTan
+  balance: 350
+  latest_asset_operation_time: null
+  free_asset_net_usage: 0
+}
+asset
+{
+  name: DucTan
+  balance: 700
+  latest_asset_operation_time: null
+  free_asset_net_usage: 0
+}
+latest_opration_time: Tue Jul 10 11:38:30 ICT 2018
+latest_consume_time: 0
+latest_consume_free_time: 510399170
+allowance: 0
+latest_withdraw_time: Thu Jan 01 08:00:00 ICT 1970
+is_witness: false
+asset_issued_name: LDTan
+
+11:38:33.457 INFO  [main] [TestClient](TestWallet.java:119) 
+address: TVEZkb74GxXkp3Sxk5AzozoyYCkEJFUswZ
+type: 0
+balance: 11453235234
+free_net_usage: 0
+net_usage: 0
+create_time: Thu Jun 28 09:37:42 ICT 2018
+asset
+{
+  name: LDTan
+  balance: 650
+  latest_asset_operation_time: null
+  free_asset_net_usage: 0
+}
+asset
+{
+  name: DucTan
+  balance: 4300
+  latest_asset_operation_time: null
+  free_asset_net_usage: 0
+}
+latest_opration_time: Thu Jun 28 15:44:06 ICT 2018
+latest_consume_time: 0
+latest_consume_free_time: 510058482
+allowance: 0
+latest_withdraw_time: Thu Jan 01 08:00:00 ICT 1970
+is_witness: false
+asset_issued_name: DucTan
+

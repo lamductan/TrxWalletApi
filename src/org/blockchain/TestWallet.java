@@ -159,7 +159,11 @@ public class TestWallet {
         String password = "tronUTS123";
         String walletFilePath = "UTC--2018-06-28T07-51-35.623000000Z--TKA6RhDiCy5uASGoD1cvdD37NeRsr7L8An.json";
         //sendCoin("TKA6RhDiCy5uASGoD1cvdD37NeRsr7L8An", password, walletFilePath, "TVEZkb74GxXkp3Sxk5AzozoyYCkEJFUswZ", 1000000);
+        //getAccount("TKA6RhDiCy5uASGoD1cvdD37NeRsr7L8An");
+        //getAccount("TVEZkb74GxXkp3Sxk5AzozoyYCkEJFUswZ");
         sendToken("TKA6RhDiCy5uASGoD1cvdD37NeRsr7L8An", password, walletFilePath, "TVEZkb74GxXkp3Sxk5AzozoyYCkEJFUswZ", "DucTan", 100);
+        //getAccount("TKA6RhDiCy5uASGoD1cvdD37NeRsr7L8An");
+        //getAccount("TVEZkb74GxXkp3Sxk5AzozoyYCkEJFUswZ");
         // git branch test
 //        for(int i = 0; i < 330000; i++){
 //            System.out.println("Block " + i);
