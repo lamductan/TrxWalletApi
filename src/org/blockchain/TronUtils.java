@@ -110,6 +110,30 @@ public class TronUtils {
         return sendCoin(ecKey, toAddress, amount);
     }
 
+    public static boolean sendCoinWithTokenName(ECKey ecKey, String toAddress, String tokenName, long amount)
+    {
+        byte[] owner = ecKey.getAddress();
+        byte[] to = WalletClient.decodeFromBase58Check(toAddress);
+        byte[] assetName = tokenName.getBytes();
+        Contract.TransferAssetContract assetContract = WalletClient.createTransferAssetContract(to,assetName,owner,amount);
+        Transaction transaction = rpcCli.createTransferAssetTransaction(assetContract);
+
+        if (transaction == null) {
+            System.out.println("Transaction null");
+            return false;
+        } else if (transaction.getRawData().getContractCount() == 0) {
+            Logger logger = LoggerFactory.getLogger("TestClient");
+            logger.info(Utils.printTransaction(transaction));
+            System.out.println("transaction.getRawData().getContractCount() == 0");
+            return false;
+        }
+        try {
+            transaction = TransactionUtils.sign(transaction, ecKey);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return rpcCli.broadcastTransaction(transaction);
+    }
     public static boolean sendCoin(ECKey ecKey, String toAddress, long amount) {
         byte[] owner = ecKey.getAddress();
         byte[] to = WalletClient.decodeFromBase58Check(toAddress);
@@ -149,7 +173,7 @@ public class TronUtils {
     public static String getTransactionHash(Transaction transaction) {
         return ByteArray.toHexString(Sha256Hash.hash(transaction.toByteArray()));
     }
-    // get Transaction Amount made by Trong-Dat Phangit
+    // get Transaction Amount made by Trong-Dat Phan
     public static long getTransactionAmount(Transaction transaction) {
         long totalAmount = 0;
         List<Transaction.Contract> listContract = transaction.getRawData().getContractList();
