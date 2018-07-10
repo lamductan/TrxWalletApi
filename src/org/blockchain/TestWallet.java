@@ -1,5 +1,6 @@
 package org.blockchain;
 
+import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,12 +11,13 @@ import org.tron.common.utils.TransactionUtils;
 import org.tron.common.utils.Utils;
 import org.tron.core.exception.CipherException;
 import org.tron.protos.Contract;
+import org.tron.protos.Protocol;
 import org.tron.protos.Protocol.Account;
 import org.tron.protos.Protocol.Block;
 import org.tron.protos.Protocol.Transaction;
 import org.tron.api.GrpcAPI.BlockList;
 import org.tron.walletserver.WalletClient;
-
+import org.tron.protos.Protocol.Transactions;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
@@ -34,12 +36,17 @@ public class TestWallet {
             return;
         }
         //logger.info(Utils.printBlock(block));
-        List<Transaction> listTransactions = block.getTransactionsList();
 
+        List<Transaction> listTransactions = block.getTransactionsList();
         for(int i = 0; i < listTransactions.size(); i++) {
             Transaction transaction = listTransactions.get(i);
+
             List<Transaction.Contract> listContract = transaction.getRawData().getContractList();
+            //System.out.println(transaction.getRawData().getRefBlockHash().toByteArray().toString());
             System.out.println("Transaction " + i + ":");
+
+            //System.out.println(transaction.getRawData().toString());
+            System.out.println(TronUtils.getTransactionAmount(transaction));
             System.out.println("  txid: " + TronUtils.getTransactionId(transaction));
             System.out.println("  hash:" + TronUtils.getTransactionHash(transaction));
             for(int j = 0; j < listContract.size(); j++) {
@@ -50,7 +57,12 @@ public class TestWallet {
                 System.out.println("      From: " + TronUtils.getContractOwner(contract));
                 System.out.println("      To: " + TronUtils.getContractToAddress(contract));
                 System.out.println("      Amount: " + TronUtils.getContractAmount(contract));
+                if (contractType.toString().equals("TransferAssetContract")) {
+                     Contract.TransferAssetContract transferAssetContract = contract.getParameter().unpack(Contract.TransferAssetContract.class);
+                     System.out.println("      Issue name: " + TronUtils.getAssetContractName(transferAssetContract));
+                }
             }
+
         }
     }
 
@@ -119,8 +131,8 @@ public class TestWallet {
 
 
     public static void main(String[] args) throws InvalidProtocolBufferException {
-        getBlock(	28692);
-        getBlock(73308);
+        //getBlock(28692);
+        //getBlock(33039);
         //getTransactionById("103e376d01ea205a8e3ba6ad36f55322485412565b3192d088044de21f8ce837");
 
         /*
@@ -138,5 +150,21 @@ public class TestWallet {
         //String password = "tronUTS123";
         //String walletFilePath = "UTC--2018-06-28T07-51-35.623000000Z--TKA6RhDiCy5uASGoD1cvdD37NeRsr7L8An.json";
         //sendCoin("TKA6RhDiCy5uASGoD1cvdD37NeRsr7L8An", password, walletFilePath, "TVEZkb74GxXkp3Sxk5AzozoyYCkEJFUswZ", 1000000);
+
+        for(int i = 0; i < 330000; i++){
+            System.out.println("Block " + i);
+            Block block = TronUtils.getBlock(i);
+            List<Transaction> listTransactions = block.getTransactionsList();
+
+            for(int j = 0; j < listTransactions.size(); j++) {
+                Transaction transaction = listTransactions.get(j);
+                List<Transaction.Contract> listContract = transaction.getRawData().getContractList();
+                if (listContract.size() > 1) {
+                    System.out.println("    Transaction " + j);
+                }
+
+            }
+
+        }
     }
 }

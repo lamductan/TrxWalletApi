@@ -24,6 +24,8 @@ import org.tron.walletserver.WalletClient;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.util.List;
 import java.util.Optional;
 
 import static org.tron.keystore.WalletUtils.loadCredentials;
@@ -71,7 +73,6 @@ public class TronUtils {
     public static Optional<BlockList> getBlockByLatestNum(long num) {
         return WalletClient.getBlockByLatestNum(num);
     }
-
     /**
      * Print information of account.
      *
@@ -114,6 +115,7 @@ public class TronUtils {
         byte[] to = WalletClient.decodeFromBase58Check(toAddress);
         Contract.TransferContract contract = WalletClient.createTransferContract(to, owner, amount);
         Transaction transaction = rpcCli.createTransaction(contract);
+
         if (transaction == null) {
             System.out.println("Transaction null");
             return false;
@@ -147,7 +149,19 @@ public class TronUtils {
     public static String getTransactionHash(Transaction transaction) {
         return ByteArray.toHexString(Sha256Hash.hash(transaction.toByteArray()));
     }
-
+    public static long getTransactionAmount(Transaction transaction) {
+        long totalAmount = 0;
+        List<Transaction.Contract> listContract = transaction.getRawData().getContractList();
+        for (int i = 0; i < listContract.size(); i++) {
+            Transaction.Contract contract = listContract.get(i);
+            try {
+                totalAmount += TronUtils.getContractAmount(contract);
+            } catch (InvalidProtocolBufferException e) {
+                e.printStackTrace();
+            }
+        }
+        return totalAmount;
+    }
     public static String getContractOwner(Transaction.Contract contract) throws InvalidProtocolBufferException {
         Transaction.Contract.ContractType contractType = contract.getType();
         switch (contractType) {
@@ -190,5 +204,8 @@ public class TronUtils {
         }
     }
 
-
+    public static String getAssetContractName(Contract.TransferAssetContract transferAssetContract)  {
+        return new String(transferAssetContract.getAssetName().toByteArray(),
+                Charset.forName("UTF-8"));
+    }
 }
