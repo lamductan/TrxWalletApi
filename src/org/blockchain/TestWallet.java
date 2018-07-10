@@ -182,6 +182,6 @@ public class TestWallet {
 //        }
 
         // lamductan branch
-        // phantrdat branch
+        // phantrdat
     }
 }
