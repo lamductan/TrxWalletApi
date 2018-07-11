@@ -51,6 +51,10 @@ public class TronUtils {
         return WalletClient.GetBlock(blockNum);
     }
 
+    public static long getBlockCount() {
+        return getBlock(-1).getBlockHeader().getRawData().getNumber();
+    }
+
     public static Optional<Transaction> getTransactionById(String transactionId) {
         return WalletClient.getTransactionById(transactionId);
     }
@@ -99,6 +103,7 @@ public class TronUtils {
         }
         return false;
     }
+
     public static boolean sendTokenFromFileAndPassword(String fromAddress, String password, String walletFilePath, String toAddress, String tokenName, long amount) {
 
         try {
@@ -110,11 +115,24 @@ public class TronUtils {
         }
         return false;
     }
+
     public static Transaction sendTokenFromFileAndPasswordAndGetTrxId(String fromAddress, String password, String walletFilePath, String toAddress, String tokenName, long amount) {
 
         try {
             ECKey ecKey = getEcKey(password, walletFilePath);
             return sendTokenFromPrivKeyAndGetTrxId(fromAddress, ecKey, toAddress,tokenName,amount);
+        } catch (Exception e) {
+            System.out.println("wrong sendcoin");
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static Transaction sendCoinFromFileAndPasswordAndGetTrxId(String fromAddress, String password, String walletFilePath, String toAddress, long amount) {
+
+        try {
+            ECKey ecKey = getEcKey(password, walletFilePath);
+            return sendCoinFromPrivKeyAndGetTrxId(fromAddress, ecKey, toAddress,amount);
         } catch (Exception e) {
             System.out.println("wrong sendcoin");
             e.printStackTrace();
@@ -141,6 +159,7 @@ public class TronUtils {
         }
         return sendToken(ecKey, toAddress,tokenName, amount);
     }
+
     public static Transaction sendTokenFromPrivKeyAndGetTrxId(String fromAddress, ECKey ecKey, String toAddress, String tokenName, long amount) {
         if(!WalletClient.encode58Check(ecKey.getAddress()).equals(fromAddress)){
             System.out.println("from priv key: " + WalletClient.encode58Check(ecKey.getAddress()));
@@ -150,8 +169,18 @@ public class TronUtils {
         }
         return sendTokenAndGetTrxId(ecKey, toAddress,tokenName, amount);
     }
-    public static Transaction sendTokenAndGetTrxId(ECKey ecKey, String toAddress, String tokenName, long amount)
-    {
+
+    public static Transaction sendCoinFromPrivKeyAndGetTrxId(String fromAddress, ECKey ecKey, String toAddress,  long amount) {
+        if(!WalletClient.encode58Check(ecKey.getAddress()).equals(fromAddress)){
+            System.out.println("from priv key: " + WalletClient.encode58Check(ecKey.getAddress()));
+            System.out.println("address: " + WalletClient.decodeFromBase58Check(fromAddress).toString());
+            System.out.println("address input is not map with private key");
+            return null;
+        }
+        return sendCoinAndGetTrxId(ecKey, toAddress, amount);
+    }
+
+    public static Transaction sendTokenAndGetTrxId(ECKey ecKey, String toAddress, String tokenName, long amount) {
         byte[] owner = ecKey.getAddress();
         byte[] to = WalletClient.decodeFromBase58Check(toAddress);
         byte[] assetName = tokenName.getBytes();
@@ -175,8 +204,32 @@ public class TronUtils {
         if(rpcCli.broadcastTransaction(transaction)) return transaction;
         return null;
     }
-    public static boolean sendToken(ECKey ecKey, String toAddress, String tokenName, long amount)
-    {
+
+    public static Transaction sendCoinAndGetTrxId(ECKey ecKey, String toAddress, long amount) {
+        byte[] owner = ecKey.getAddress();
+        byte[] to = WalletClient.decodeFromBase58Check(toAddress);
+        Contract.TransferContract contract = WalletClient.createTransferContract(to,owner,amount);
+        Transaction transaction = rpcCli.createTransaction(contract);
+
+        if (transaction == null) {
+            System.out.println("Transaction null");
+            return null;
+        } else if (transaction.getRawData().getContractCount() == 0) {
+            Logger logger = LoggerFactory.getLogger("TestClient");
+            logger.info(Utils.printTransaction(transaction));
+            System.out.println("transaction.getRawData().getContractCount() == 0");
+            return null;
+        }
+        try {
+            transaction = TransactionUtils.sign(transaction, ecKey);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        if(rpcCli.broadcastTransaction(transaction)) return transaction;
+        return null;
+    }
+
+    public static boolean sendToken(ECKey ecKey, String toAddress, String tokenName, long amount) {
         byte[] owner = ecKey.getAddress();
         byte[] to = WalletClient.decodeFromBase58Check(toAddress);
         byte[] assetName = tokenName.getBytes();
@@ -199,6 +252,7 @@ public class TronUtils {
         }
         return rpcCli.broadcastTransaction(transaction);
     }
+
     public static boolean sendCoin(ECKey ecKey, String toAddress, long amount) {
         byte[] owner = ecKey.getAddress();
         byte[] to = WalletClient.decodeFromBase58Check(toAddress);
@@ -230,6 +284,7 @@ public class TronUtils {
         WalletFile walletFile = Wallet.createStandard(passwd, credentials.getEcKeyPair());
         return Wallet.decrypt(passwd, walletFile);
     }
+
     public static String backUpWallet(String password, String walletFilePath)
     {
         ECKey ecKey = null;
@@ -240,8 +295,13 @@ public class TronUtils {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return ByteArray.toHexString(ecKey.getPrivKey().toByteArray());
+        String privKey = ByteArray.toHexString(ecKey.getPrivKey().toByteArray());
+        int len = privKey.length();
+        if (len > 64)
+            privKey = privKey.substring(len - 64);
+        return privKey;
     }
+
     public static String getTransactionId(Transaction transaction) {
         return ByteArray.toHexString(Sha256Hash.hash(transaction.getRawData().toByteArray()));
     }
@@ -249,6 +309,7 @@ public class TronUtils {
     public static String getTransactionHash(Transaction transaction) {
         return ByteArray.toHexString(Sha256Hash.hash(transaction.toByteArray()));
     }
+
     // get Transaction Amount made by Trong-Dat Phan
     public static long getTransactionAmount(Transaction transaction) {
         long totalAmount = 0;
@@ -263,6 +324,7 @@ public class TronUtils {
         }
         return totalAmount;
     }
+
     public static String getContractOwner(Transaction.Contract contract) throws InvalidProtocolBufferException {
         Transaction.Contract.ContractType contractType = contract.getType();
         switch (contractType) {
