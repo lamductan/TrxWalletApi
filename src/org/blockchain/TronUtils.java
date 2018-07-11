@@ -51,8 +51,9 @@ public class TronUtils {
         return WalletClient.GetBlock(blockNum);
     }
 
-//    public static Block getLatestBlock(long blockNum) {
-//    }
+    public static long getBlockCount() {
+        return getBlock(-1).getBlockHeader().getRawData().getNumber();
+    }
 
     public static Optional<Transaction> getTransactionById(String transactionId) {
         return WalletClient.getTransactionById(transactionId);
@@ -284,7 +285,8 @@ public class TronUtils {
         return Wallet.decrypt(passwd, walletFile);
     }
 
-    public static String backUpWallet(String password, String walletFilePath) {
+    public static String backUpWallet(String password, String walletFilePath)
+    {
         ECKey ecKey = null;
         try {
             ecKey = getEcKey(password, walletFilePath);
@@ -293,7 +295,11 @@ public class TronUtils {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return ByteArray.toHexString(ecKey.getPrivKey().toByteArray());
+        String privKey = ByteArray.toHexString(ecKey.getPrivKey().toByteArray());
+        int len = privKey.length();
+        if (len > 64)
+            privKey = privKey.substring(len - 64);
+        return privKey;
     }
 
     public static String getTransactionId(Transaction transaction) {
