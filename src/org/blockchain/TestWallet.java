@@ -167,8 +167,8 @@ public class TestWallet {
 
         String password = "tronUTS123";
         String walletFilePath = "UTC--2018-06-28T07-51-35.623000000Z--TKA6RhDiCy5uASGoD1cvdD37NeRsr7L8An.json";
-        Transaction transaction = sendTokenAndGetTrxId("TKA6RhDiCy5uASGoD1cvdD37NeRsr7L8An", password, walletFilePath, "TVEZkb74GxXkp3Sxk5AzozoyYCkEJFUswZ", "DucTan",5);
-        System.out.print(TronUtils.getTransactionId(transaction));
+        //Transaction transaction = sendTokenAndGetTrxId("TKA6RhDiCy5uASGoD1cvdD37NeRsr7L8An", password, walletFilePath, "TVEZkb74GxXkp3Sxk5AzozoyYCkEJFUswZ", "DucTan",5);
+        //System.out.print(TronUtils.getTransactionId(transaction));
         //sendCoin("TKA6RhDiCy5uASGoD1cvdD37NeRsr7L8An", password, walletFilePath, "TVEZkb74GxXkp3Sxk5AzozoyYCkEJFUswZ", 1000000);
         //getAccount("TKA6RhDiCy5uASGoD1cvdD37NeRsr7L8An");
         //getAccount("TVEZkb74GxXkp3Sxk5AzozoyYCkEJFUswZ");
@@ -192,5 +192,7 @@ public class TestWallet {
 //
         // lamductan branch
         // phantrdat
+
+        sendCoin("TKA6RhDiCy5uASGoD1cvdD37NeRsr7L8An", password, walletFilePath, "TVEZkb74GxXkp3Sxk5AzozoyYCkEJFUswZ", 100000000L);
     }
 }
