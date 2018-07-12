@@ -371,4 +371,5 @@ public class TronUtils {
         return new String(transferAssetContract.getAssetName().toByteArray(),
                 Charset.forName("UTF-8"));
     }
+
 }

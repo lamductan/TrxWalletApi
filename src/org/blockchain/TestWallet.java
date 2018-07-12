@@ -193,7 +193,7 @@ public class TestWallet {
     public static void main(String[] args) throws InvalidProtocolBufferException, FileNotFoundException, UnsupportedEncodingException {
 //        getBlock(33039);
         //getTransactionById("103e376d01ea205a8e3ba6ad36f55322485412565b3192d088044de21f8ce837");
-        getTransactionById("d7ae33c537e2cba651076571913b9f63a0c4fb96379a98da2e0b60336867b38e");
+//        getTransactionById("d7ae33c537e2cba651076571913b9f63a0c4fb96379a98da2e0b60336867b38e");
 
 
 //        try {
@@ -231,6 +231,25 @@ public class TestWallet {
 
         //getBlock(398748);
         //getBlock(-1);
-        findMultiContractTransaction(0, TronUtils.getBlockCount());
+//        findMultiContractTransaction(0, TronUtils.getBlockCount());
+        PrintWriter writer = new PrintWriter("NumberTransactionInEachBlock.csv", "UTF-8");
+        writer.println("Block,#Transaction,#Contract,#Ret");
+        for(long i = 0 ; i <TronUtils.getBlockCount() ; i++) {
+            Block block = TronUtils.getBlock(i);
+            int TransactionCount = block.getTransactionsCount();
+            if(TransactionCount>0) {
+                List<Transaction> listTransactions = block.getTransactionsList();
+                long ContractCountinBlock = 0 ;
+                long TransactionRetCount = 0;
+                for(int j=0; j<TransactionCount;j++) {
+                    Transaction transaction = listTransactions.get(j);
+                    ContractCountinBlock+= transaction.getRawData().getContractCount();
+                    TransactionRetCount += transaction.getRetCount();
+                }
+                System.out.println(i + "," + TransactionCount+","+ContractCountinBlock+","+TransactionRetCount);
+                writer.println(i + "," + TransactionCount+","+ContractCountinBlock+","+TransactionRetCount);
+            }
+        }
+        writer.close();
     }
 }
