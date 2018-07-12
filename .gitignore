@@ -2,3 +2,4 @@ out/*
 logs/*
 .idea/*
 config.conf
+*.csv
