@@ -1,23 +1,16 @@
 package org.blockchain;
 
-import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.tron.api.GrpcAPI;
-import org.tron.common.crypto.Sha256Hash;
-import org.tron.common.utils.ByteArray;
-import org.tron.common.utils.TransactionUtils;
 import org.tron.common.utils.Utils;
 import org.tron.core.exception.CipherException;
 import org.tron.protos.Contract;
-import org.tron.protos.Protocol;
 import org.tron.protos.Protocol.Account;
 import org.tron.protos.Protocol.Block;
 import org.tron.protos.Protocol.Transaction;
 import org.tron.api.GrpcAPI.BlockList;
-import org.tron.walletserver.WalletClient;
-import org.tron.protos.Protocol.Transactions;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -188,6 +181,35 @@ public class TestWallet {
                 }
             }
         }
+        writer.close();
+    }
+
+    public static void statictisBlocks() throws FileNotFoundException, UnsupportedEncodingException {
+        PrintWriter writer = new PrintWriter("NumberTransactionInEachBlock.csv", "UTF-8");
+        writer.println("Block,#Transaction,#Contract,#Ret");
+        for(long i = 0 ; i < TronUtils.getBlockCount(); i++) {
+            Block block = TronUtils.getBlock(i);
+            int transactionsCount = block.getTransactionsCount();
+            if(transactionsCount > 0) {
+                List<Transaction> listTransactions = block.getTransactionsList();
+                long contractCountInBlock = 0 ;
+                long totalTransactionRetCountInBlock = 0;
+                for(int j = 0; j < transactionsCount; j++) {
+                    Transaction transaction = listTransactions.get(j);
+                    contractCountInBlock += transaction.getRawData().getContractCount();
+                    totalTransactionRetCountInBlock += transaction.getRetCount();
+                }
+                System.out.println(i + ","
+                                     + transactionsCount + ","
+                                     + contractCountInBlock + ","
+                                     + totalTransactionRetCountInBlock);
+                writer.println(i + ","
+                               + transactionsCount + ","
+                               + contractCountInBlock + ","
+                               + totalTransactionRetCountInBlock);
+            }
+        }
+        writer.close();
     }
 
     public static void main(String[] args) throws InvalidProtocolBufferException, FileNotFoundException, UnsupportedEncodingException {
@@ -232,24 +254,8 @@ public class TestWallet {
         //getBlock(398748);
         //getBlock(-1);
 //        findMultiContractTransaction(0, TronUtils.getBlockCount());
-        PrintWriter writer = new PrintWriter("NumberTransactionInEachBlock.csv", "UTF-8");
-        writer.println("Block,#Transaction,#Contract,#Ret");
-        for(long i = 0 ; i <TronUtils.getBlockCount() ; i++) {
-            Block block = TronUtils.getBlock(i);
-            int TransactionCount = block.getTransactionsCount();
-            if(TransactionCount>0) {
-                List<Transaction> listTransactions = block.getTransactionsList();
-                long ContractCountinBlock = 0 ;
-                long TransactionRetCount = 0;
-                for(int j=0; j<TransactionCount;j++) {
-                    Transaction transaction = listTransactions.get(j);
-                    ContractCountinBlock+= transaction.getRawData().getContractCount();
-                    TransactionRetCount += transaction.getRetCount();
-                }
-                System.out.println(i + "," + TransactionCount+","+ContractCountinBlock+","+TransactionRetCount);
-                writer.println(i + "," + TransactionCount+","+ContractCountinBlock+","+TransactionRetCount);
-            }
-        }
-        writer.close();
+
+        statictisBlocks();
+
     }
 }
