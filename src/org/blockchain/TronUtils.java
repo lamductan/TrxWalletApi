@@ -285,8 +285,7 @@ public class TronUtils {
         return Wallet.decrypt(passwd, walletFile);
     }
 
-    public static String backUpWallet(String password, String walletFilePath)
-    {
+    public static String backUpWallet(String password, String walletFilePath)    {
         ECKey ecKey = null;
         try {
             ecKey = getEcKey(password, walletFilePath);
@@ -371,5 +370,6 @@ public class TronUtils {
         return new String(transferAssetContract.getAssetName().toByteArray(),
                 Charset.forName("UTF-8"));
     }
+
 
 }
