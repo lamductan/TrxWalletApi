@@ -108,6 +108,7 @@ public class TronUtils {
 
         try {
             ECKey ecKey = getEcKey(password, walletFilePath);
+
             return sendTokenFromPrivKey(fromAddress, ecKey, toAddress,tokenName,amount);
         } catch (Exception e) {
             System.out.println("wrong sendcoin");

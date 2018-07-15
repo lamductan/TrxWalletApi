@@ -235,16 +235,19 @@ public class TestWallet {
 //        Transaction transaction = sendTokenAndGetTrxId("TKA6RhDiCy5uASGoD1cvdD37NeRsr7L8An", password, walletFilePath, "TVEZkb74GxXkp3Sxk5AzozoyYCkEJFUswZ", "DucTan",5);
 //        System.out.print(TronUtils.getTransactionId(transaction));
 
-//        Transaction transaction = sendCoinAndGetTrxId("TKA6RhDiCy5uASGoD1cvdD37NeRsr7L8An", password, walletFilePath, "TVEZkb74GxXkp3Sxk5AzozoyYCkEJFUswZ",5);
-//        System.out.print(TronUtils.getTransactionId(transaction));
+        Transaction transaction = sendCoinAndGetTrxId("TKA6RhDiCy5uASGoD1cvdD37NeRsr7L8An", password, walletFilePath, "TVEZkb74GxXkp3Sxk5AzozoyYCkEJFUswZ",5);
+
+
+
+        // System.out.print(TronUtils.getTransactionId(transaction));
 
         //sendCoin("TKA6RhDiCy5uASGoD1cvdD37NeRsr7L8An", password, walletFilePath, "TVEZkb74GxXkp3Sxk5AzozoyYCkEJFUswZ", 1000000);
         //sendToken("TKA6RhDiCy5uASGoD1cvdD37NeRsr7L8An", password, walletFilePath, "TVEZkb74GxXkp3Sxk5AzozoyYCkEJFUswZ", "DucTan", 1);
         //getAccount("TKA6RhDiCy5uASGoD1cvdD37NeRsr7L8An");
         //getAccount("TVEZkb74GxXkp3Sxk5AzozoyYCkEJFUswZ");
         //sendCoin("TKA6RhDiCy5uASGoD1cvdD37NeRsr7L8An", password, walletFilePath, "TVEZkb74GxXkp3Sxk5AzozoyYCkEJFUswZ", 6498664766L);
-        String password1 = "lamductan@123";
-        String walletFilePath1 = "UTC--2018-06-29T06-53-22.686000000Z--TVEZkb74GxXkp3Sxk5AzozoyYCkEJFUswZ.json";
+        //String password1 = "lamductan@123";
+        //String walletFilePath1 = "UTC--2018-06-29T06-53-22.686000000Z--TVEZkb74GxXkp3Sxk5AzozoyYCkEJFUswZ.json";
         //sendCoin("TVEZkb74GxXkp3Sxk5AzozoyYCkEJFUswZ", password1, walletFilePath1, "TKA6RhDiCy5uASGoD1cvdD37NeRsr7L8An", -10000000L);
         //sendCoin("TKA6RhDiCy5uASGoD1cvdD37NeRsr7L8An", password, walletFilePath, "TVEZkb74GxXkp3Sxk5AzozoyYCkEJFUswZ", 0L);
 
@@ -254,8 +257,8 @@ public class TestWallet {
         //getBlock(398748);
         //getBlock(-1);
 //        findMultiContractTransaction(0, TronUtils.getBlockCount());
-
         statictisBlocks();
+
 
     }
 }
