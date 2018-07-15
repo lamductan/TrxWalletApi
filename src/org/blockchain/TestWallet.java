@@ -163,22 +163,17 @@ public class TestWallet {
         return transaction;
     }
 
-
     public static void sendCoin(String privateKey, String toAddress, long amount) {
-        BigInteger bi = new BigInteger(privateKey,16);
-        ECKey ecKey = ECKey.fromPrivate(bi);
-        boolean result = TronUtils.sendCoin(ecKey, toAddress, amount);
+        boolean result = TronUtils.sendCoin(privateKey, toAddress, amount);
         if (result) {
             logger.info("Send " + amount + " drop to " + toAddress + " successful !!");
         } else {
             logger.info("Send " + amount + " drop to " + toAddress + " failed !!");
         }
     }
-//
+
     public static Transaction sendCoinAndGetTrxId(String privateKey, String toAddress, long amount) {
-        BigInteger bi = new BigInteger(privateKey,16);
-        ECKey ecKey = ECKey.fromPrivate(bi);
-        Transaction transaction = TronUtils.sendCoinAndGetTrxId(ecKey, toAddress, amount);
+        Transaction transaction = TronUtils.sendCoinAndGetTrxId(privateKey, toAddress, amount);
         boolean result = (transaction==null)?false:true;
         if (result) {
             logger.info("Send " + amount + " " + "TRX" + " drop to " + toAddress + " successful !!");
@@ -187,22 +182,18 @@ public class TestWallet {
         }
         return transaction;
     }
-//
+
     public static void sendToken(String privateKey, String toAddress,String tokenName, long amount) {
-        BigInteger bi = new BigInteger(privateKey,16);
-        ECKey ecKey = ECKey.fromPrivate(bi);
-        boolean result = TronUtils.sendToken(ecKey, toAddress, tokenName, amount);
+        boolean result = TronUtils.sendToken(privateKey, toAddress, tokenName, amount);
         if (result) {
             logger.info("Send " + amount + " " + tokenName + " drop to " + toAddress + " successful !!");
         } else {
             logger.info("Send " + amount + " " + tokenName + " drop to " + toAddress + " failed !!");
         }
     }
-//
+
     public static Transaction sendTokenAndGetTrxId(String privateKey, String toAddress,String tokenName, long amount) {
-        BigInteger bi = new BigInteger(privateKey,16);
-        ECKey ecKey = ECKey.fromPrivate(bi);
-        Transaction transaction = TronUtils.sendTokenAndGetTrxId(ecKey, toAddress, tokenName, amount);
+        Transaction transaction = TronUtils.sendTokenAndGetTrxId(privateKey, toAddress, tokenName, amount);
         boolean result = (transaction == null) ? false : true;
         if (result) {
             logger.info("Send " + amount + " " + tokenName + " drop to " + toAddress + " successful !!");
@@ -267,7 +258,7 @@ public class TestWallet {
         String privateKey = "dbb5043d470012cac45d53852a41aa76bd8010fe66df325358b7608c513ff240";
 //        getBlock(33039);
         //getTransactionById("103e376d01ea205a8e3ba6ad36f55322485412565b3192d088044de21f8ce837");
-//        getTransactionById("4a2fec20be04785cc6c83ed33f2adc67971fa7aeca4cf9f0983127f0bb8c94d1");
+        getTransactionById("f230181c2636a17003098521bb631c0beb5c041fce66636efeafd0992a1af270");
 
 
 //        try {
@@ -315,6 +306,9 @@ public class TestWallet {
 //        statictisBlocks();
 
 //        Transaction transaction = sendTokenAndGetTrxId(privateKey,"TVEZkb74GxXkp3Sxk5AzozoyYCkEJFUswZ", "DucTan",22);
+//        System.out.print(TronUtils.getTransactionId(transaction));
+
+//        Transaction transaction = sendCoinAndGetTrxId(privateKey,"TVEZkb74GxXkp3Sxk5AzozoyYCkEJFUswZ",22);
 //        System.out.print(TronUtils.getTransactionId(transaction));
 
     }
