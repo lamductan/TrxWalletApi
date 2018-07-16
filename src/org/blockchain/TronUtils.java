@@ -24,7 +24,9 @@ import org.tron.walletserver.WalletClient;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.nio.charset.Charset;
+import java.security.PrivateKey;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,7 +48,23 @@ public class TronUtils {
         String keystoreName = wallet.store2Keystore();
         return keystoreName;
     }
-
+    public static String registerAccount(String passwordStr) throws CipherException, IOException {
+        char[] password = passwordStr.toCharArray();
+        if (!WalletClient.passwordValid(password)) {
+            return null;
+        }
+        byte[] passwd = StringUtils.char2Byte(password);
+        WalletClient wallet = new WalletClient(passwd);
+        String privKey = wallet.getEcKey(passwd).getPrivKey().toString(16);
+        StringUtils.clear(passwd);
+        return privKey;
+    }
+    public static String getAddressFromPrivKey(String privKey)
+    {
+        BigInteger bi = new BigInteger(privKey,16);
+        ECKey ecKey = ECKey.fromPrivate(bi);
+        return WalletClient.encode58Check(ecKey.getAddress());
+    }
     public static Block getBlock(long blockNum) {
         return WalletClient.GetBlock(blockNum);
     }
@@ -108,7 +126,6 @@ public class TronUtils {
 
         try {
             ECKey ecKey = getEcKey(password, walletFilePath);
-
             return sendTokenFromPrivKey(fromAddress, ecKey, toAddress,tokenName,amount);
         } catch (Exception e) {
             System.out.println("wrong sendcoin");
@@ -230,6 +247,18 @@ public class TronUtils {
         return null;
     }
 
+    public static Transaction sendTokenAndGetTrxId(String privateKey, String toAddress, String tokenName, long amount) {
+        BigInteger bi = new BigInteger(privateKey,16);
+        ECKey ecKey = ECKey.fromPrivate(bi);
+        return sendTokenAndGetTrxId(ecKey,toAddress,tokenName,amount);
+    }
+
+    public static Transaction sendCoinAndGetTrxId(String privateKey, String toAddress, long amount) {
+        BigInteger bi = new BigInteger(privateKey,16);
+        ECKey ecKey = ECKey.fromPrivate(bi);
+        return sendCoinAndGetTrxId(ecKey,toAddress,amount);
+    }
+
     public static boolean sendToken(ECKey ecKey, String toAddress, String tokenName, long amount) {
         byte[] owner = ecKey.getAddress();
         byte[] to = WalletClient.decodeFromBase58Check(toAddress);
@@ -277,6 +306,18 @@ public class TronUtils {
         return rpcCli.broadcastTransaction(transaction);
     }
 
+    public static boolean sendToken(String privateKey, String toAddress, String tokenName, long amount) {
+        BigInteger bi = new BigInteger(privateKey,16);
+        ECKey ecKey = ECKey.fromPrivate(bi);
+        return  sendToken(ecKey,toAddress,tokenName,amount);
+    }
+
+    public static boolean sendCoin(String privateKey, String toAddress, long amount) {
+        BigInteger bi = new BigInteger(privateKey,16);
+        ECKey ecKey = ECKey.fromPrivate(bi);
+        return  sendCoin(ecKey,toAddress,amount);
+    }
+
     private static ECKey getEcKey(String password, String walletFilePath) throws CipherException, IOException {
         byte[] passwd = StringUtils.char2Byte(password.toCharArray());
         String filePath = "Wallet/" + walletFilePath;
@@ -286,8 +327,7 @@ public class TronUtils {
         return Wallet.decrypt(passwd, walletFile);
     }
 
-    public static String backUpWallet(String password, String walletFilePath)
-    {
+    public static String backUpWallet(String password, String walletFilePath)    {
         ECKey ecKey = null;
         try {
             ecKey = getEcKey(password, walletFilePath);
@@ -372,5 +412,6 @@ public class TronUtils {
         return new String(transferAssetContract.getAssetName().toByteArray(),
                 Charset.forName("UTF-8"));
     }
+
 
 }
