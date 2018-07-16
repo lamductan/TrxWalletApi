@@ -26,6 +26,7 @@ import java.io.File;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.nio.charset.Charset;
+import java.security.PrivateKey;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,7 +48,23 @@ public class TronUtils {
         String keystoreName = wallet.store2Keystore();
         return keystoreName;
     }
-
+    public static String registerAccount(String passwordStr) throws CipherException, IOException {
+        char[] password = passwordStr.toCharArray();
+        if (!WalletClient.passwordValid(password)) {
+            return null;
+        }
+        byte[] passwd = StringUtils.char2Byte(password);
+        WalletClient wallet = new WalletClient(passwd);
+        String privKey = wallet.getEcKey(passwd).getPrivKey().toString(16);
+        StringUtils.clear(passwd);
+        return privKey;
+    }
+    public static String getAddressFromPrivKey(String privKey)
+    {
+        BigInteger bi = new BigInteger(privKey,16);
+        ECKey ecKey = ECKey.fromPrivate(bi);
+        return WalletClient.encode58Check(ecKey.getAddress());
+    }
     public static Block getBlock(long blockNum) {
         return WalletClient.GetBlock(blockNum);
     }
