@@ -145,23 +145,42 @@ public class TronUtils {
         }
         return null;
     }
+
     public static boolean sendAll(String privateKey, String toAddress)
     {
         long amount = getBalance(getAddressFromPrivKey(privateKey));
-        if(sendCoin(privateKey,toAddress,amount))
+        if(sendCoin(privateKey, toAddress, amount))
             return true;
         else {
             long fee = getTransactionFee(privateKey, toAddress, amount);
-            amount -=fee;
-            return sendCoin(privateKey,toAddress,amount);
+            amount -= fee;
+            return sendCoin(privateKey, toAddress, amount);
         }
     }
+
     public static boolean sendAllToken(String privateKey, String toAddress, String tokenName)
     {
         String address = getAddressFromPrivKey(privateKey);
-        long amount = TronUtils.getAccount(address).getAssetMap().get(tokenName);
-        return(sendToken(privateKey,toAddress,tokenName,amount));
+        Account account = TronUtils.getAccount(address);
+        if (account.getAssetCount() <= 0) {
+            return false;
+        }
+        boolean findTokenName = false;
+        for(String name : account.getAssetMap().keySet()) {
+            if (name.equals(tokenName)) {
+                findTokenName = true;
+                break;
+            }
+        }
+        if (findTokenName == false) {
+            return false;
+        }
+        else {
+            long amount = TronUtils.getAccount(address).getAssetMap().get(tokenName);
+            return (sendToken(privateKey, toAddress, tokenName, amount));
+        }
     }
+
     public static long getTransactionFee(String privateKey, String toAddress, long amount)
     {
         BigInteger bi = new BigInteger(privateKey,16);
@@ -172,12 +191,8 @@ public class TronUtils {
         Transaction transaction = rpcCli.createTransaction(contract);
 
         if (transaction == null) {
-            //System.out.println("Transaction null");
             return 0;
         } else if (transaction.getRawData().getContractCount() == 0) {
-            //Logger logger = LoggerFactory.getLogger("TestClient");
-            //logger.info(Utils.printTransaction(transaction));
-            //System.out.println("transaction.getRawData().getContractCount() == 0");
             return 0;
         }
         try {
@@ -187,6 +202,7 @@ public class TronUtils {
         }
         return transaction.toByteArray().length*10;
     }
+
     public static Transaction sendCoinFromFileAndPasswordAndGetTrxId(String fromAddress, String password, String walletFilePath, String toAddress, long amount) {
 
         try {
