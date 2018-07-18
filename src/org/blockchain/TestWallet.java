@@ -34,7 +34,7 @@ public class TestWallet {
             logger.info("No block for num : " + blockNum);
             return;
         }
-        //logger.info(Utils.printBlock(block));
+        logger.info(Utils.printBlock(block));
 
         List<Transaction> listTransactions = block.getTransactionsList();
         for(int i = 0; i < listTransactions.size(); i++) {
@@ -265,16 +265,23 @@ public class TestWallet {
     }
 
     public static void main(String[] args) throws IOException, CipherException {
-        String privateKey = "dbb5043d470012cac45d53852a41aa76bd8010fe66df325358b7608c513ff240";
-
+        String privateKey = "dbb5043d470012cac45d53852a41aa76bd8010fe66df325358b7608c513ff240"; // TK... account
+        String add = "TKA6RhDiCy5uASGoD1cvdD37NeRsr7L8An";
+        String privateKey1 = "beb49375aaad23422584b1a2b4c755c53a5beb4356f4a7c1b8a2f28ce7162c96";
+        String add1 = "TVEZkb74GxXkp3Sxk5AzozoyYCkEJFUswZ";
         String walletFilePath = "UTC--2018-06-28T07-51-35.623000000Z--TKA6RhDiCy5uASGoD1cvdD37NeRsr7L8An.json";
+
         String password = "tronUTS123";
+
+        System.out.print(TronUtils.sendAllToken(privateKey1,"TKA6RhDiCy5uASGoD1cvdD37NeRsr7L8An", "LDTan"));
+
         //registerAccount(password);
-        System.out.print(TronUtils.getAddressFromPrivKey("dbb5043d470012cac45d53852a41aa76bd8010fe66df325358b7608c513ff240"));
+        //System.out.print(TronUtils.getAddressFromPrivKey("dbb5043d470012cac45d53852a41aa76bd8010fe66df325358b7608c513ff240"));
         //Transaction transaction = sendCoinAndGetTrxId("TKA6RhDiCy5uASGoD1cvdD37NeRsr7L8An",password, walletFilePath,"TLj47nYMtSsFBXKyX66NMBiFYic39pLqSy",10);
         //getBlock(-1);
-        //getTransactionById("103e376d01ea205a8e3ba6ad36f55322485412565b3192d088044de21f8ce837");
+       // getTransactionById("103e376d01ea205a8e3ba6ad36f55322485412565b3192d088044de21f8ce837");
         //getTransactionById("f230181c2636a17003098521bb631c0beb5c041fce66636efeafd0992a1af270");
+        //getTransactionById("535b5b209cff86fc997bf931b17d48918fa2860991cf98d5067dbc2ffc441ff4");
 
 
 //        try {
@@ -302,8 +309,16 @@ public class TestWallet {
 
 
 
-        //sendCoin("TKA6RhDiCy5uASGoD1cvdD37NeRsr7L8An", password, walletFilePath, "TVEZkb74GxXkp3Sxk5AzozoyYCkEJFUswZ", 1000000);
-        //sendToken("TKA6RhDiCy5uASGoD1cvdD37NeRsr7L8An", password, walletFilePath, "TVEZkb74GxXkp3Sxk5AzozoyYCkEJFUswZ", "DucTan", 1);
+//        String password1 = "lamductan@123";
+//        String walletFilePath1 = "UTC--2018-06-29T06-53-22.686000000Z--TVEZkb74GxXkp3Sxk5AzozoyYCkEJFUswZ.json";
+//        for(int i = 0; i < 1; ++i) {
+//            Transaction transaction = sendCoinAndGetTrxId("TVEZkb74GxXkp3Sxk5AzozoyYCkEJFUswZ", password1, walletFilePath1, "TKA6RhDiCy5uASGoD1cvdD37NeRsr7L8An", 500000000L);
+//            System.out.print(transaction.toByteArray().length);
+//        }
+            //for(int i = 0; i < 20; i++)
+        //sendCoinAndGetTrxId("TKA6RhDiCy5uASGoD1cvdD37NeRsr7L8An", password, walletFilePath, "TVEZkb74GxXkp3Sxk5AzozoyYCkEJFUswZ", );
+
+            //sendToken("TKA6RhDiCy5uASGoD1cvdD37NeRsr7L8An", password, walletFilePath, "TVEZkb74GxXkp3Sxk5AzozoyYCkEJFUswZ", "DucTan", 1);
         //getAccount("TKA6RhDiCy5uASGoD1cvdD37NeRsr7L8An");
         //getAccount("TVEZkb74GxXkp3Sxk5AzozoyYCkEJFUswZ");
         //sendCoin("TKA6RhDiCy5uASGoD1cvdD37NeRsr7L8An", password, walletFilePath, "TVEZkb74GxXkp3Sxk5AzozoyYCkEJFUswZ", 6498664766L);
@@ -334,6 +349,7 @@ public class TestWallet {
 //        Transaction transaction = sendCoinAndGetTrxId(privateKey,"TVEZkb74GxXkp3Sxk5AzozoyYCkEJFUswZ",22);
 //        System.out.print(TronUtils.getTransactionId(transaction));
 
+        //backupWallet(password1, walletFilePath1);
 
     }
 }

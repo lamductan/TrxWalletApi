@@ -145,7 +145,48 @@ public class TronUtils {
         }
         return null;
     }
+    public static boolean sendAll(String privateKey, String toAddress)
+    {
+        long amount = getBalance(getAddressFromPrivKey(privateKey));
+        if(sendCoin(privateKey,toAddress,amount))
+            return true;
+        else {
+            long fee = getTransactionFee(privateKey, toAddress, amount);
+            amount -=fee;
+            return sendCoin(privateKey,toAddress,amount);
+        }
+    }
+    public static boolean sendAllToken(String privateKey, String toAddress, String tokenName)
+    {
+        String address = getAddressFromPrivKey(privateKey);
+        long amount = TronUtils.getAccount(address).getAssetMap().get(tokenName);
+        return(sendToken(privateKey,toAddress,tokenName,amount));
+    }
+    public static long getTransactionFee(String privateKey, String toAddress, long amount)
+    {
+        BigInteger bi = new BigInteger(privateKey,16);
+        ECKey ecKey = ECKey.fromPrivate(bi);
+        byte[] owner = ecKey.getAddress();
+        byte[] to = WalletClient.decodeFromBase58Check(toAddress);
+        Contract.TransferContract contract = WalletClient.createTransferContract(to, owner, amount);
+        Transaction transaction = rpcCli.createTransaction(contract);
 
+        if (transaction == null) {
+            //System.out.println("Transaction null");
+            return 0;
+        } else if (transaction.getRawData().getContractCount() == 0) {
+            //Logger logger = LoggerFactory.getLogger("TestClient");
+            //logger.info(Utils.printTransaction(transaction));
+            //System.out.println("transaction.getRawData().getContractCount() == 0");
+            return 0;
+        }
+        try {
+            transaction = TransactionUtils.sign(transaction, ecKey);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return transaction.toByteArray().length*10;
+    }
     public static Transaction sendCoinFromFileAndPasswordAndGetTrxId(String fromAddress, String password, String walletFilePath, String toAddress, long amount) {
 
         try {
