@@ -4,6 +4,8 @@ import com.google.protobuf.InvalidProtocolBufferException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.tron.api.GrpcAPI;
+import org.tron.common.utils.ByteUtil;
+import org.tron.common.utils.TransactionUtils;
 import org.tron.common.utils.Utils;
 import org.tron.core.exception.CipherException;
 import org.tron.protos.Contract;
@@ -238,11 +240,11 @@ public class TestWallet {
 //        Transaction transaction = sendCoinAndGetTrxId("TKA6RhDiCy5uASGoD1cvdD37NeRsr7L8An", password, walletFilePath, "TVEZkb74GxXkp3Sxk5AzozoyYCkEJFUswZ",5);
 //        System.out.print(TronUtils.getTransactionId(transaction));
 
-        //sendCoin("TKA6RhDiCy5uASGoD1cvdD37NeRsr7L8An", password, walletFilePath, "TVEZkb74GxXkp3Sxk5AzozoyYCkEJFUswZ", 1000000);
-        //sendToken("TKA6RhDiCy5uASGoD1cvdD37NeRsr7L8An", password, walletFilePath, "TVEZkb74GxXkp3Sxk5AzozoyYCkEJFUswZ", "DucTan", 1);
+        sendCoin("TKA6RhDiCy5uASGoD1cvdD37NeRsr7L8An", password, walletFilePath, "TVEZkb74GxXkp3Sxk5AzozoyYCkEJFUswZ", 1000000);
+        //sendToken("TKA6RhDiCy5uA/SGoD1cvdD37NeRsr7L8An", password, walletFilePath, "TVEZkb74GxXkp3Sxk5AzozoyYCkEJFUswZ", "DucTan", 1);
         //getAccount("TKA6RhDiCy5uASGoD1cvdD37NeRsr7L8An");
         //getAccount("TVEZkb74GxXkp3Sxk5AzozoyYCkEJFUswZ");
-        //sendCoin("TKA6RhDiCy5uASGoD1cvdD37NeRsr7L8An", password, walletFilePath, "TVEZkb74GxXkp3Sxk5AzozoyYCkEJFUswZ", 6498664766L);
+        //sendCoin("TKA6RhDiCy5uASGoD1cvdD37NeRsr7L8An", password, walletFilePath, "TVEZkb/74GxXkp3Sxk5AzozoyYCkEJFUswZ", 6498664766L);
         String password1 = "lamductan@123";
         String walletFilePath1 = "UTC--2018-06-29T06-53-22.686000000Z--TVEZkb74GxXkp3Sxk5AzozoyYCkEJFUswZ.json";
         //sendCoin("TVEZkb74GxXkp3Sxk5AzozoyYCkEJFUswZ", password1, walletFilePath1, "TKA6RhDiCy5uASGoD1cvdD37NeRsr7L8An", -10000000L);
@@ -255,7 +257,12 @@ public class TestWallet {
         //getBlock(-1);
 //        findMultiContractTransaction(0, TronUtils.getBlockCount());
 
-        statictisBlocks();
+        //statictisBlocks();
+
+        String transactionId = "103e376d01ea205a8e3ba6ad36f55322485412565b3192d088044de21f8ce837";
+        Optional<Transaction> result = TronUtils.getTransactionById(transactionId);
+        Transaction transaction = result.get();
+        System.out.println();
 
     }
 }
